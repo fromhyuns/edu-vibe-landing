@@ -361,6 +361,32 @@
     .img-placeholder span {
       font-size: 14px; color: #9CA3AF; font-weight: 500;
     }
+    /* 로딩 도트 */
+    .loading-dots { display: flex; gap: 4px; align-items: center; padding: 10px 14px; }
+    .loading-dots span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--mint); display: inline-block;
+      animation: dotBounce 1s infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes dotBounce {
+      0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    /* 완성 페이지 */
+    .result-page { border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: none; }
+    .result-page-header { background: linear-gradient(135deg, #667eea, #764ba2); padding: 12px 14px; }
+    .result-page-title { color: #fff; font-size: 12px; font-weight: 800; margin-bottom: 6px; }
+    .result-page-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+    .result-page-tag { background: rgba(255,255,255,0.2); color: #fff; border-radius: 100px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
+    .result-page-body { background: rgba(255,255,255,0.05); padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; }
+    .result-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.15); }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
@@ -432,10 +458,28 @@
             <div class="chat-area" id="chatArea"></div>
             <div class="ui-preview" id="uiPreview">
               <div class="preview-inner" id="previewInner">
-                <div class="preview-skeleton">
+                <div class="preview-skeleton" id="skeletonArea">
                   <div class="sk" style="width:60%"></div>
                   <div class="sk" style="width:80%"></div>
                   <div class="sk" style="width:50%"></div>
+                </div>
+                <div class="loading-dots" id="loadingDots" style="display:none">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="result-page" id="resultPage">
+                  <div class="result-page-header">
+                    <div class="result-page-title">안녕하세요! 저는 김민준이에요 👋</div>
+                    <div class="result-page-tags">
+                      <span class="result-page-tag">축구</span>
+                      <span class="result-page-tag">게임</span>
+                      <span class="result-page-tag">개발자 꿈</span>
+                    </div>
+                  </div>
+                  <div class="result-page-body">
+                    <div class="result-bar" style="width:70%"></div>
+                    <div class="result-bar" style="width:50%"></div>
+                    <div class="result-bar" style="width:60%"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -532,8 +576,8 @@
         <ul class="exp-list">
           <li><span class="exp-check">✓</span> 반 만들기부터 작품 확인까지 한 곳에서</li>
           <li><span class="exp-check">✓</span> 학생 가입 없이 코드로 간편 초대</li>
-          <li><span class="exp-check">✓</span> 실시간 현황 & 도움 요청 확인</li>
-          <li><span class="exp-check">✓</span> 학운위 심의 자료 & 개인정보 동의서 제공</li>
+          <li><span class="exp-check">✓</span> 실시간 현황 및 도움 요청 확인</li>
+          <li><span class="exp-check">✓</span> 학운위 심의 자료 및 개인정보 동의서 제공</li>
         </ul>
       </div>
       <div class="exp-card student reveal reveal-delay-2">
@@ -543,8 +587,8 @@
         <ul class="exp-list">
           <li><span class="exp-check">✓</span> 가입 없이 코드만으로 바로 시작</li>
           <li><span class="exp-check">✓</span> 아이디어를 말하면 AI가 웹페이지로 완성</li>
-          <li><span class="exp-check">✓</span> 창 닫아도 내 작업 그대로</li>
-          <li><span class="exp-check">✓</span> 막히면 도움 버튼으로 선생님 바로 호출</li>
+          <li><span class="exp-check">✓</span> 창을 닫아도 내 작업은 그대로</li>
+          <li><span class="exp-check">✓</span> 막히면 도움 버튼으로 선생님께 바로 요청</li>
         </ul>
       </div>
     </div>
@@ -629,16 +673,17 @@
     document.querySelector('nav').style.boxShadow = window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,0.07)' : 'none';
   }, { passive: true });
 
-  /* 히어로 타이핑 모션 */
+  /* 히어로 모션: 대화 → 로딩 → 완성 페이지 */
   const messages = [
     { role: 'user', text: '나만의 소개 페이지 만들어줘! 취미랑 꿈도 넣고 싶어' },
-    { role: 'ai',   text: '소개 페이지 완성했어요! 취미 카드랑 꿈 섹션도 넣었어요. 색깔 바꿔볼까요?' },
-    { role: 'user', text: '배경을 하늘색으로 바꿔줘' },
-    { role: 'ai',   text: '하늘색으로 바꿨어요. 훨씬 예쁘죠? 더 수정하고 싶은 거 있으면 말해줘요!' },
+    { role: 'ai',   text: '알겠어요! 소개 페이지를 만들어 드릴게요.' },
   ];
 
-  const chatArea = document.getElementById('chatArea');
-  let msgIdx = 0, charIdx = 0, currentBubble = null, isTyping = false;
+  const chatArea     = document.getElementById('chatArea');
+  const skeletonArea = document.getElementById('skeletonArea');
+  const loadingDots  = document.getElementById('loadingDots');
+  const resultPage   = document.getElementById('resultPage');
+  let msgIdx = 0, charIdx = 0, currentBubble = null;
 
   function createBubble(role) {
     const wrap = document.createElement('div');
@@ -655,9 +700,36 @@
     return bubble;
   }
 
+  function showLoading() {
+    skeletonArea.style.display = 'none';
+    resultPage.style.display   = 'none';
+    loadingDots.style.display  = 'flex';
+  }
+
+  function showResult() {
+    loadingDots.style.display = 'none';
+    resultPage.style.display  = 'block';
+    resultPage.style.animation = 'fadeInUp 0.4s ease forwards';
+  }
+
+  function resetAll() {
+    chatArea.innerHTML = '';
+    skeletonArea.style.display = 'flex';
+    loadingDots.style.display  = 'none';
+    resultPage.style.display   = 'none';
+    msgIdx = 0; charIdx = 0;
+    setTimeout(typeNext, 600);
+  }
+
   function typeNext() {
     if (msgIdx >= messages.length) {
-      setTimeout(() => { chatArea.innerHTML = ''; msgIdx = 0; charIdx = 0; typeNext(); }, 3000);
+      // 로딩 모션
+      showLoading();
+      setTimeout(() => {
+        showResult();
+        // 2.5초 후 처음부터 반복
+        setTimeout(resetAll, 3500);
+      }, 1800);
       return;
     }
     const msg = messages[msgIdx];
@@ -669,14 +741,16 @@
       const cur = document.createElement('span');
       cur.className = 'typing-cursor';
       currentBubble.appendChild(cur);
-      setTimeout(typeNext, 40);
+      setTimeout(typeNext, 38);
     } else {
       const cursor = currentBubble.querySelector('.typing-cursor');
       if (cursor) cursor.remove();
       msgIdx++; charIdx = 0;
-      setTimeout(typeNext, msg.role === 'ai' ? 1200 : 600);
+      setTimeout(typeNext, msg.role === 'ai' ? 800 : 500);
     }
   }
+
+  setTimeout(typeNext, 800);
 
   setTimeout(typeNext, 800);
 </script>
