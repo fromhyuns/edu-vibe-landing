@@ -52,7 +52,11 @@
       box-shadow: 0 4px 16px rgba(45,212,191,0.35);
       transition: all 0.2s;
     }
-    .nav-pill-outline {
+    .nav-login {
+      color: var(--gray); font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-login:hover { color: var(--mint-dk); }
       background: transparent; color: var(--mint-dk);
       padding: 10px 24px; border-radius: 100px;
       font-size: 14px; font-weight: 700; text-decoration: none;
@@ -382,7 +386,10 @@
     <div class="logo-mark">🍑</div>
     에듀바이브
   </a>
-  <a href="https://forms.gle/ZaKR2H7qtKusVQvt7" target="_blank" class="nav-pill-outline">선생님 계정 신청하기</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="https://edu-vibe.goorm.io/login" target="_blank" class="nav-login">로그인</a>
+    <a href="https://forms.gle/ZaKR2H7qtKusVQvt7" target="_blank" class="nav-pill-outline">선생님 계정 신청하기</a>
+  </div>
 </nav>
 
 
