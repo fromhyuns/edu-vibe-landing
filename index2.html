@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>에듀바이브 — 상상만 하던 그거, 진짜로 만들어봐요</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --mint:     #2DD4BF;
+      --mint-dk:  #0F9D8A;
+      --mint-lt:  #CCFBF1;
+      --mint-pal: #F0FDFB;
+      --dark:     #0F2D2A;
+      --gray:     #6B7280;
+      --white:    #FFFFFF;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--dark); overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 16px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(16px);
+      background: rgba(255,255,255,0.88);
+      border-bottom: 1px solid rgba(45,212,191,0.12);
+      transition: box-shadow 0.3s;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 18px; font-weight: 800; color: var(--dark); text-decoration: none;
+    }
+    .logo-mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--mint), var(--mint-dk));
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-login {
+      color: var(--gray); font-size: 14px; font-weight: 600;
+      text-decoration: none; padding: 10px 20px; border-radius: 100px;
+      border: none; background: transparent; transition: color 0.2s;
+    }
+    .nav-login:hover { color: var(--mint-dk); }
+    .nav-cta {
+      background: transparent; color: var(--mint-dk);
+      padding: 10px 22px; border-radius: 100px;
+      font-size: 14px; font-weight: 700; text-decoration: none;
+      border: 2px solid var(--mint-dk); transition: all 0.2s;
+    }
+    .nav-cta:hover { background: var(--mint-dk); color: #fff; }
+
+    /* ── SECTIONS ── */
+    section { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 48px; width: 100%; }
+
+    /* ── § 1 HERO ── */
+    #hero {
+      background: linear-gradient(160deg, #ECFDF9 0%, #F0FDFB 50%, #E4FAF7 100%);
+    }
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.3; pointer-events: none;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center;
+      padding: 120px 0 80px; position: relative; z-index: 1;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--mint-lt); color: var(--mint-dk);
+      border-radius: 100px; padding: 6px 14px;
+      font-size: 13px; font-weight: 700; margin-bottom: 24px;
+    }
+    .hero-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); }
+    h1 {
+      font-size: clamp(36px, 4vw, 60px); font-weight: 900;
+      line-height: 1.12; letter-spacing: -0.03em; margin-bottom: 24px; color: var(--dark);
+    }
+    h1 .hi { color: var(--mint-dk); }
+    .hero-sub {
+      font-size: 17px; color: #4B7571; line-height: 1.8;
+      margin-bottom: 36px; max-width: 440px;
+    }
+    .hero-sub strong { color: var(--dark); font-weight: 700; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-main {
+      background: linear-gradient(135deg, var(--mint), var(--mint-dk));
+      color: #fff; padding: 15px 32px; border-radius: 100px;
+      font-size: 15px; font-weight: 800; text-decoration: none;
+      box-shadow: 0 8px 24px rgba(45,212,191,0.35);
+      transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-main:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(45,212,191,0.45); }
+    .btn-ghost {
+      background: transparent; color: var(--mint-dk);
+      padding: 15px 28px; border-radius: 100px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      border: 2px solid var(--mint-dk); transition: all 0.2s;
+    }
+    .btn-ghost:hover { background: var(--mint-dk); color: #fff; }
+
+    /* Hero — 타이핑 모션 UI 카드 */
+    .hero-ui {
+      background: #fff; border-radius: 24px;
+      box-shadow: 0 32px 80px rgba(0,80,70,0.1), 0 0 0 1px rgba(45,212,191,0.12);
+      overflow: hidden; max-width: 420px; margin: 0 auto;
+    }
+    .ui-topbar {
+      background: linear-gradient(135deg, var(--mint-dk), #0A7A6B);
+      padding: 14px 18px; display: flex; align-items: center; gap: 10px;
+    }
+    .ui-topbar-title { color: #fff; font-size: 13px; font-weight: 700; }
+    .ui-topbar-sub { color: rgba(255,255,255,0.65); font-size: 11px; }
+    .ui-body { padding: 16px; }
+
+    /* 타이핑 채팅 */
+    .chat-area { display: flex; flex-direction: column; gap: 10px; min-height: 120px; }
+    .chat-bubble {
+      padding: 10px 14px; border-radius: 14px;
+      font-size: 13px; line-height: 1.55; width: fit-content; max-width: 80%;
+    }
+    .chat-bubble.user {
+      background: linear-gradient(135deg, #0F9D8A, #2DD4BF);
+      color: #fff; align-self: flex-end; border-bottom-right-radius: 4px;
+    }
+    .chat-bubble.ai {
+      background: var(--mint-pal, #F0FDFB); color: #134E4A;
+      border-bottom-left-radius: 4px;
+    }
+    .typing-cursor {
+      display: inline-block; width: 2px; height: 14px;
+      background: var(--mint-dk); margin-left: 2px; vertical-align: middle;
+      animation: blink 0.8s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* 미리보기 화면 */
+    .ui-preview {
+      margin-top: 12px; border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(45,212,191,0.15);
+      transition: all 0.5s ease;
+    }
+    .preview-inner {
+      padding: 16px; min-height: 100px;
+      transition: all 0.5s ease;
+    }
+    .preview-skeleton { display: flex; flex-direction: column; gap: 6px; }
+    .sk { height: 8px; border-radius: 4px; background: #E5E7EB; }
+
+    /* 완성된 웹페이지 미리보기 */
+    .preview-done {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 16px; display: none;
+    }
+    .preview-done-title { color: #fff; font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+    .preview-done-card {
+      background: rgba(255,255,255,0.15); border-radius: 8px;
+      padding: 10px 12px; margin-bottom: 6px;
+    }
+    .preview-done-name { color: #fff; font-size: 11px; font-weight: 700; }
+    .preview-done-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+    .preview-done-tag {
+      background: rgba(255,255,255,0.2); color: #fff;
+      border-radius: 100px; padding: 2px 8px; font-size: 10px; font-weight: 600;
+    }
+    .preview-submit {
+      display: flex; gap: 8px; margin-top: 10px;
+    }
+    .ps-btn {
+      flex: 1; border-radius: 8px; padding: 8px;
+      font-size: 11px; font-weight: 700; text-align: center;
+    }
+    .ps-btn.primary { background: var(--mint); color: #fff; }
+    .ps-btn.secondary { background: rgba(255,255,255,0.15); color: #fff; }
+
+    /* ── § 2 FEATURES (통합) ── */
+    #features { background: #fff; min-height: auto; }
+    #features .wrap { padding-top: 100px; padding-bottom: 100px; }
+    .sec-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 100px; padding: 5px 14px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    .sec-tag.mint { background: var(--mint-lt); color: var(--mint-dk); border: 1px solid rgba(45,212,191,0.3); }
+    .sec-tag.dark { background: rgba(45,212,191,0.12); color: var(--mint); border: 1px solid rgba(45,212,191,0.25); }
+    .sec-h2 { font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; line-height: 1.15; margin-bottom: 12px; }
+    .sec-p { font-size: 17px; color: var(--gray); margin-bottom: 56px; }
+
+    /* 기능 그리드 — 좌우 레이아웃 */
+    .feat-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center; margin-bottom: 80px;
+    }
+    .feat-row:last-child { margin-bottom: 0; }
+    .feat-row.reverse { direction: rtl; }
+    .feat-row.reverse > * { direction: ltr; }
+    .feat-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--mint-dk); margin-bottom: 12px;
+    }
+    .feat-h3 { font-size: clamp(22px, 2.5vw, 32px); font-weight: 900; margin-bottom: 14px; line-height: 1.2; }
+    .feat-p { font-size: 15px; color: var(--gray); line-height: 1.75; margin-bottom: 20px; }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .feat-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: #374151; }
+    .feat-list li::before { content: "✓"; color: var(--mint-dk); font-weight: 700; flex-shrink: 0; }
+
+    /* UI 목업 카드들 */
+    .mock-card {
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    }
+    .mock-header {
+      padding: 14px 18px; display: flex; align-items: center; gap: 8px;
+    }
+    .mock-header.mint-bg { background: linear-gradient(135deg, var(--mint-dk), #0A7A6B); }
+    .mock-header.dark-bg { background: var(--dark); }
+    .mock-header.white-bg { background: #fff; border-bottom: 1px solid #F3F4F6; }
+    .mock-title { font-size: 13px; font-weight: 700; }
+    .mock-title.white { color: #fff; }
+    .mock-title.dark { color: var(--dark); }
+    .mock-body { padding: 16px; }
+    .mock-body.white { background: #fff; }
+    .mock-body.gray { background: #F9FAFB; }
+    .mock-body.dark { background: #1A1A2E; }
+
+    /* 대시보드 목업 */
+    .dash-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px; background: #F9FAFB; border-radius: 10px; margin-bottom: 8px;
+    }
+    .dash-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .dash-name { font-size: 13px; font-weight: 600; flex: 1; color: var(--dark); }
+    .dash-badge {
+      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px;
+    }
+    .badge-done { background: #D1FAE5; color: #065F46; }
+    .badge-wip  { background: #FEF3C7; color: #92400E; }
+    .badge-help { background: #FEE2E2; color: #991B1B; }
+    .dash-progress { margin-top: 12px; }
+    .dash-prog-label { font-size: 11px; color: var(--gray); margin-bottom: 4px; font-weight: 600; }
+    .dash-prog-bar { height: 8px; background: #E5E7EB; border-radius: 4px; overflow: hidden; }
+    .dash-prog-fill { height: 100%; background: linear-gradient(90deg, var(--mint), var(--mint-dk)); border-radius: 4px; }
+
+    /* 갤러리 목업 */
+    .gal-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+    .gal-item { border-radius: 10px; overflow: hidden; position: relative; aspect-ratio: 4/3; }
+    .gal-item-bg { width: 100%; height: 100%; }
+    .gal-item-label {
+      position: absolute; bottom: 4px; left: 4px; right: 4px;
+      background: rgba(0,0,0,0.55); color: #fff;
+      font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 4px; text-align: center;
+    }
+
+    /* ── § 3 EXPERIENCE (선생님/학생) ── */
+    #experience { background: var(--dark); min-height: auto; }
+    #experience .wrap { padding-top: 100px; padding-bottom: 100px; }
+    .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 56px; }
+    .exp-card {
+      border-radius: 24px; padding: 36px 32px;
+      position: relative; overflow: hidden;
+    }
+    .exp-card.teacher {
+      background: linear-gradient(135deg, rgba(45,212,191,0.12), rgba(15,157,138,0.08));
+      border: 1px solid rgba(45,212,191,0.2);
+    }
+    .exp-card.student {
+      background: linear-gradient(135deg, rgba(96,165,250,0.1), rgba(139,92,246,0.08));
+      border: 1px solid rgba(96,165,250,0.2);
+    }
+    .exp-role { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .exp-card.teacher .exp-role { color: var(--mint); }
+    .exp-card.student .exp-role { color: #93C5FD; }
+    .exp-card h3 { font-size: clamp(20px, 2vw, 26px); font-weight: 900; color: #fff; line-height: 1.25; margin-bottom: 10px; }
+    .exp-card h3 em { font-style: normal; }
+    .exp-card.teacher h3 em { color: var(--mint); }
+    .exp-card.student h3 em { color: #93C5FD; }
+    .exp-desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.75; margin-bottom: 24px; }
+    .exp-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .exp-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.75); }
+    .exp-check { flex-shrink: 0; font-size: 14px; }
+    .exp-card.teacher .exp-check { color: var(--mint); }
+    .exp-card.student .exp-check { color: #93C5FD; }
+
+    /* ── § 4 CTA ── */
+    #cta {
+      background: linear-gradient(135deg, var(--mint-dk) 0%, #0A7A6B 50%, #064E47 100%);
+      text-align: center; min-height: 60vh;
+    }
+    #cta .wrap { padding-top: 80px; padding-bottom: 80px; }
+    .cta-emoji { font-size: 56px; margin-bottom: 20px; display: block; }
+    #cta h2 { color: #fff; font-size: clamp(28px, 4vw, 52px); font-weight: 900; margin-bottom: 14px; line-height: 1.15; }
+    #cta p { color: rgba(255,255,255,0.8); font-size: 17px; margin-bottom: 36px; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-white {
+      background: #fff; color: var(--mint-dk);
+      padding: 16px 36px; border-radius: 100px;
+      font-size: 15px; font-weight: 800; text-decoration: none;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.18); transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,0.22); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #071C1A; padding: 24px 48px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    .f-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; color: #fff; text-decoration: none; }
+    footer p { font-size: 12px; color: rgba(255,255,255,0.3); }
+    footer a { font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; }
+    footer a:hover { color: var(--mint); }
+
+    /* ── FLOATING CS ── */
+    .cs-wrap { position: fixed; bottom: 28px; right: 28px; z-index: 999; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+    .cs-popup {
+      width: 300px; background: #fff; border-radius: 20px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.06);
+      overflow: hidden;
+      transform: scale(0.85) translateY(16px); transform-origin: bottom right;
+      opacity: 0; pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .cs-popup.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+    .cs-popup-header {
+      background: linear-gradient(135deg, var(--mint-dk), #0A7A6B);
+      padding: 18px 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .cs-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .cs-popup-title { color: #fff; font-size: 14px; font-weight: 700; }
+    .cs-popup-status { color: rgba(255,255,255,0.7); font-size: 11px; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+    .cs-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ADE80; display: inline-block; }
+    .cs-close-btn { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 4px; }
+    .cs-close-btn:hover { color: #fff; }
+    .cs-popup-body { padding: 20px 16px; display: flex; flex-direction: column; gap: 10px; }
+    .cs-greeting { font-size: 14px; line-height: 1.7; color: #374151; background: #F9FAFB; border-radius: 12px; padding: 12px 14px; margin-bottom: 4px; }
+    .cs-menu-btn { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: var(--mint-pal); border: 1.5px solid var(--mint-lt); font-size: 14px; font-weight: 600; color: var(--mint-dk); text-decoration: none; transition: all 0.2s; }
+    .cs-menu-btn:hover { background: var(--mint-lt); transform: translateY(-1px); }
+    .cs-btn { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--mint), var(--mint-dk)); border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(45,212,191,0.45); display: flex; align-items: center; justify-content: center; font-size: 24px; transition: all 0.2s; position: relative; }
+    .cs-btn:hover { transform: scale(1.08); }
+    .cs-badge { position: absolute; top: -2px; right: -2px; width: 18px; height: 18px; border-radius: 50%; background: #EF4444; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+    .cs-badge.hidden { display: none; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner, .feat-row, .exp-grid { grid-template-columns: 1fr; }
+      .feat-row.reverse { direction: ltr; }
+      .hero-ui { display: none; }
+      nav { padding: 14px 24px; }
+      footer { padding: 20px 24px; }
+      .wrap { padding: 0 24px; }
+    }
+    @media (max-width: 540px) {
+      h1 { font-size: 34px; }
+      .hero-btns { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://edu-vibe.goorm.io" target="_blank" class="logo">
+    <div class="logo-mark">🍑</div>
+    에듀바이브
+  </a>
+  <div class="nav-right">
+    <a href="https://edu-vibe.goorm.io" target="_blank" class="nav-login">로그인</a>
+    <a href="https://forms.gle/ZaKR2H7qtKusVQvt7" target="_blank" class="nav-cta">선생님 계정 신청하기</a>
+  </div>
+</nav>
+
+
+<!-- § 1 HERO -->
+<section id="hero">
+  <div class="blob" style="width:500px;height:500px;background:var(--mint);top:-120px;right:-80px"></div>
+  <div class="blob" style="width:280px;height:280px;background:#FBBF24;bottom:40px;left:-60px"></div>
+
+  <div class="wrap">
+    <div class="hero-inner">
+
+      <!-- 카피 -->
+      <div class="reveal">
+        <div class="hero-tag"><span class="dot"></span> 초·중학생을 위한 바이브코딩 수업</div>
+        <h1>상상만 하던 그거<br/><span class="hi">진짜로 만들어봐요</span></h1>
+        <p class="hero-sub">
+          코딩을 가르쳐본 적 없어도 괜찮아요.<br/>
+          <strong>반 만들기부터 작품 확인까지</strong> 에듀바이브가 도와드려요.
+        </p>
+        <div class="hero-btns">
+          <a href="https://edu-vibe.goorm.io" target="_blank" class="btn-main">지금 바로 시작하기</a>
+          <a href="https://forms.gle/ZaKR2H7qtKusVQvt7" target="_blank" class="btn-ghost">선생님 계정 신청하기</a>
+        </div>
+      </div>
+
+      <!-- 타이핑 모션 UI -->
+      <div class="reveal reveal-delay-2">
+        <div class="hero-ui">
+          <div class="ui-topbar">
+            <span style="font-size:20px">🍑</span>
+            <div>
+              <div class="ui-topbar-title">에듀바이브</div>
+              <div class="ui-topbar-sub">AI와 함께 만들어요</div>
+            </div>
+          </div>
+          <div class="ui-body">
+            <div class="chat-area" id="chatArea"></div>
+            <div class="ui-preview" id="uiPreview">
+              <div class="preview-inner" id="previewInner">
+                <div class="preview-skeleton">
+                  <div class="sk" style="width:60%"></div>
+                  <div class="sk" style="width:80%"></div>
+                  <div class="sk" style="width:50%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="preview-submit" style="margin-top:10px">
+              <div class="ps-btn primary">선생님께 제출하기</div>
+              <div class="ps-btn secondary" style="background:#F3F4F6;color:#6B7280;flex:0.5">도움 요청</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- § 2 FEATURES (통합) -->
+<section id="features">
+  <div class="wrap">
+
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="sec-tag mint">기능 소개</div>
+      <h2 class="sec-h2">수업에 필요한 모든 것</h2>
+      <p class="sec-p">AI 실습부터 학급 관리까지, 에듀바이브 하나로 해결해요.</p>
+    </div>
+
+    <!-- 기능 1: AI 실습창 -->
+    <div class="feat-row reveal">
+      <div>
+        <div class="feat-label">AI 실습창</div>
+        <h3 class="feat-h3">만들고 싶은 걸<br/>말하면 바로 완성</h3>
+        <p class="feat-p">채팅창에 아이디어를 적으면 AI가 웹페이지로 만들어줘요. 코딩 지식이 전혀 없어도 돼요.</p>
+        <ul class="feat-list">
+          <li>자연어로 요청하면 AI가 즉시 제작</li>
+          <li>실시간 미리보기로 결과 바로 확인</li>
+          <li>수정 요청도 채팅으로 간편하게</li>
+          <li>완성 후 제출 버튼 한 번으로 공유</li>
+        </ul>
+      </div>
+      <div class="mock-card reveal reveal-delay-1">
+        <div class="mock-header mint-bg">
+          <span style="font-size:16px">🍑</span>
+          <div>
+            <div class="mock-title white">에듀바이브 실습창</div>
+          </div>
+        </div>
+        <div class="mock-body dark" style="display:flex;flex-direction:column;gap:8px;padding:14px">
+          <div style="display:flex;gap:8px;align-items:flex-end;flex-direction:row-reverse">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#60A5FA,#3B82F6);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">🙋</div>
+            <div style="background:linear-gradient(135deg,#0F9D8A,#2DD4BF);color:#fff;padding:8px 12px;border-radius:14px;border-bottom-right-radius:4px;font-size:12px;line-height:1.5;max-width:75%">나만의 소개 페이지 만들어줘! 취미랑 꿈도 넣고 싶어</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-end">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--mint-dk));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">AI</div>
+            <div style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);padding:8px 12px;border-radius:14px;border-bottom-left-radius:4px;font-size:12px;line-height:1.5;max-width:80%">소개 페이지 완성했어요! 취미 카드랑 꿈 섹션도 만들었어요. 색깔 바꿔볼까요?</div>
+          </div>
+          <div style="margin-top:4px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)">
+            <div style="background:linear-gradient(135deg,#667eea,#764ba2);padding:12px">
+              <div style="color:#fff;font-size:11px;font-weight:800;margin-bottom:6px">안녕하세요! 저는 김민준이에요</div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap">
+                <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:100px;padding:2px 8px;font-size:10px">축구</span>
+                <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:100px;padding:2px 8px;font-size:10px">게임</span>
+                <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:100px;padding:2px 8px;font-size:10px">개발자</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 기능 2: 학급 관리 대시보드 -->
+    <div class="feat-row reverse reveal">
+      <div>
+        <div class="feat-label">학급 관리</div>
+        <h3 class="feat-h3">우리 반 현황을<br/>실시간으로 파악</h3>
+        <p class="feat-p">누가 완료했는지, 누가 막혔는지, 도움 요청은 누가 보냈는지 한눈에 볼 수 있어요.</p>
+        <ul class="feat-list">
+          <li>학생별 진행 상태 실시간 확인</li>
+          <li>도움 요청 즉시 알림</li>
+          <li>가입 없이 코드만으로 학생 초대</li>
+          <li>학운위 심의 자료 & 개인정보 동의서 제공</li>
+        </ul>
+      </div>
+      <div class="mock-card reveal reveal-delay-1">
+        <div class="mock-header white-bg">
+          <div class="mock-title dark">3학년 2반 — 오늘의 수업</div>
+        </div>
+        <div class="mock-body white">
+          <div class="dash-row">
+            <div class="dash-avatar" style="background:#3B82F6">김</div>
+            <div class="dash-name">김민준</div>
+            <div class="dash-badge badge-done">제출 완료</div>
+          </div>
+          <div class="dash-row">
+            <div class="dash-avatar" style="background:#8B5CF6">이</div>
+            <div class="dash-name">이서연</div>
+            <div class="dash-badge badge-wip">제작 중</div>
+          </div>
+          <div class="dash-row">
+            <div class="dash-avatar" style="background:#EF4444">박</div>
+            <div class="dash-name">박지호</div>
+            <div class="dash-badge badge-help">🙋 도움 요청</div>
+          </div>
+          <div class="dash-row">
+            <div class="dash-avatar" style="background:#10B981">최</div>
+            <div class="dash-name">최지은</div>
+            <div class="dash-badge badge-done">제출 완료</div>
+          </div>
+          <div class="dash-progress">
+            <div class="dash-prog-label">제출 현황 — 18 / 27명</div>
+            <div class="dash-prog-bar"><div class="dash-prog-fill" style="width:67%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 기능 3: 결과물 갤러리 -->
+    <div class="feat-row reveal">
+      <div>
+        <div class="feat-label">결과물 갤러리</div>
+        <h3 class="feat-h3">모든 작품을<br/>한 곳에서 확인</h3>
+        <p class="feat-p">학생들이 제출한 결과물을 갤러리로 모아서 확인해요. 제출하면 공유 링크가 자동으로 생겨요.</p>
+        <ul class="feat-list">
+          <li>학급 전체 결과물 갤러리 조회</li>
+          <li>제출 시 공유 링크 자동 생성</li>
+          <li>작업은 자동 저장, 다음 수업에 이어서</li>
+          <li>CSV·파일 일괄 다운로드</li>
+        </ul>
+      </div>
+      <div class="mock-card reveal reveal-delay-1">
+        <div class="mock-header white-bg">
+          <div class="mock-title dark">3학년 2반 — 결과물 갤러리</div>
+        </div>
+        <div class="mock-body white">
+          <div class="gal-grid">
+            <div class="gal-item">
+              <div class="gal-item-bg" style="background:linear-gradient(135deg,#667eea,#764ba2);height:100%"></div>
+              <div class="gal-item-label">김민준</div>
+            </div>
+            <div class="gal-item">
+              <div class="gal-item-bg" style="background:linear-gradient(135deg,#f093fb,#f5576c);height:100%"></div>
+              <div class="gal-item-label">이서연</div>
+            </div>
+            <div class="gal-item">
+              <div class="gal-item-bg" style="background:linear-gradient(135deg,#4facfe,#00f2fe);height:100%"></div>
+              <div class="gal-item-label">박지호</div>
+            </div>
+            <div class="gal-item">
+              <div class="gal-item-bg" style="background:linear-gradient(135deg,#43e97b,#38f9d7);height:100%"></div>
+              <div class="gal-item-label">최지은</div>
+            </div>
+            <div class="gal-item">
+              <div class="gal-item-bg" style="background:linear-gradient(135deg,#fa709a,#fee140);height:100%"></div>
+              <div class="gal-item-label">정민서</div>
+            </div>
+            <div class="gal-item" style="background:#F9FAFB;display:flex;align-items:center;justify-content:center">
+              <span style="font-size:12px;color:var(--gray);font-weight:600">+22명</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- § 3 EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="sec-tag dark">선생님과 학생 모두를 위해</div>
+      <h2 class="sec-h2 light" style="color:#fff">가르치는 것도,<br/>만드는 것도 모두 쉬워요</h2>
+      <p style="font-size:17px;color:rgba(255,255,255,0.6);margin-bottom:0">선생님은 수월하게, 학생은 즐겁게</p>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card teacher reveal reveal-delay-1">
+        <div class="exp-role">선생님</div>
+        <h3>수업 준비부터<br/>결과 확인까지<br/><em>에듀바이브 한 곳에서</em></h3>
+        <p class="exp-desc">Padlet, 구글폼, Notion 여기저기 쓸 필요 없어요. 학생들이 직접 만드는 수업, 이제 어렵지 않아요.</p>
+        <ul class="exp-list">
+          <li><span class="exp-check">✓</span> 반 만들기부터 작품 확인까지 한 곳에서</li>
+          <li><span class="exp-check">✓</span> 학생 가입 없이 코드로 간편 초대</li>
+          <li><span class="exp-check">✓</span> 실시간 현황 & 도움 요청 확인</li>
+          <li><span class="exp-check">✓</span> 학운위 심의 자료 & 개인정보 동의서 제공</li>
+        </ul>
+      </div>
+      <div class="exp-card student reveal reveal-delay-2">
+        <div class="exp-role">학생</div>
+        <h3>AI를 쓰기만 하던 내가<br/><em>AI로 만드는 사람으로</em></h3>
+        <p class="exp-desc">만들고, 고치고, 다시 만들면서 내 아이디어가 점점 멋져져요. 게임, 퀴즈, 나만의 소개 페이지까지.</p>
+        <ul class="exp-list">
+          <li><span class="exp-check">✓</span> 가입 없이 코드만으로 바로 시작</li>
+          <li><span class="exp-check">✓</span> 아이디어를 말하면 AI가 웹페이지로 완성</li>
+          <li><span class="exp-check">✓</span> 창 닫아도 내 작업 그대로 남아있음</li>
+          <li><span class="exp-check">✓</span> 막히면 도움 버튼으로 선생님 바로 호출</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- § 4 CTA -->
+<section id="cta">
+  <div class="blob" style="width:500px;height:500px;background:rgba(45,212,191,0.12);top:-100px;right:-150px;filter:blur(100px);border-radius:50%"></div>
+  <div class="wrap" style="position:relative;z-index:1">
+    <span class="cta-emoji">🎉</span>
+    <h2>에듀바이브로 시작하세요</h2>
+    <p>바이브코딩 수업의 새로운 경험, 지금 바로 만나보세요.</p>
+    <div class="cta-btns">
+      <a href="https://edu-vibe.goorm.io" target="_blank" class="btn-white">지금 바로 시작하기</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://edu-vibe.goorm.io" target="_blank" class="f-logo">
+    <div class="logo-mark" style="width:28px;height:28px;font-size:14px;border-radius:8px">🍑</div>
+    에듀바이브
+  </a>
+  <div style="display:flex;align-items:center;gap:24px;margin-left:auto">
+    <a href="https://s3.ap-northeast-2.amazonaws.com/statics.goorm.io/edu_vibe/docs/EduVibePrivacyPolicy.html" target="_blank">개인정보처리방침</a>
+    <p>© 2026 goorm Inc. All rights reserved.</p>
+  </div>
+</footer>
+
+
+<!-- FLOATING CS -->
+<div class="cs-wrap">
+  <div class="cs-popup" id="csPopup">
+    <div class="cs-popup-header">
+      <div class="cs-avatar">🍑</div>
+      <div>
+        <div class="cs-popup-title">에듀바이브 상담</div>
+        <div class="cs-popup-status"><span class="cs-online-dot"></span> 평일 09:00 – 18:00</div>
+      </div>
+      <button class="cs-close-btn" onclick="toggleCs()">✕</button>
+    </div>
+    <div class="cs-popup-body">
+      <p class="cs-greeting">안녕하세요!<br/>에듀바이브 도입이나 사용에 대해<br/>궁금한 점을 편하게 물어보세요.</p>
+      <a href="https://forms.gle/ZaKR2H7qtKusVQvt7" target="_blank" class="cs-menu-btn">계정 신청하기</a>
+      <a href="mailto:contact@goorm.io" class="cs-menu-btn">이메일 문의하기</a>
+    </div>
+  </div>
+  <button class="cs-btn" onclick="toggleCs()" aria-label="상담하기">
+    <span id="csIconChat">💬</span>
+    <span id="csIconClose" style="display:none;color:#fff;font-size:16px">✕</span>
+    <span class="cs-badge" id="csBadge">1</span>
+  </button>
+</div>
+
+
+<script>
+  /* CS 팝업 */
+  function toggleCs() {
+    const popup = document.getElementById('csPopup');
+    const chat  = document.getElementById('csIconChat');
+    const close = document.getElementById('csIconClose');
+    const badge = document.getElementById('csBadge');
+    const isOpen = popup.classList.contains('open');
+    popup.classList.toggle('open');
+    chat.style.display  = isOpen ? '' : 'none';
+    close.style.display = isOpen ? 'none' : '';
+    badge.classList.add('hidden');
+  }
+
+  /* Scroll Reveal */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => { if (el.isIntersecting) { el.target.classList.add('visible'); observer.unobserve(el.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* Nav shadow */
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.boxShadow = window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,0.07)' : 'none';
+  }, { passive: true });
+
+  /* 히어로 타이핑 모션 */
+  const messages = [
+    { role: 'user', text: '나만의 소개 페이지 만들어줘! 취미랑 꿈도 넣고 싶어' },
+    { role: 'ai',   text: '소개 페이지 완성했어요! 취미 카드랑 꿈 섹션도 넣었어요. 색깔 바꿔볼까요?' },
+    { role: 'user', text: '배경을 하늘색으로 바꿔줘' },
+    { role: 'ai',   text: '하늘색으로 바꿨어요. 훨씬 예쁘죠? 더 수정하고 싶은 거 있으면 말해줘요!' },
+  ];
+
+  const chatArea = document.getElementById('chatArea');
+  let msgIdx = 0, charIdx = 0, currentBubble = null, isTyping = false;
+
+  function createBubble(role) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `display:flex;gap:8px;align-items:flex-end;${role==='user'?'flex-direction:row-reverse':''}`;
+    const av = document.createElement('div');
+    av.style.cssText = `width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${role==='ai'?'10px':'13px'};font-weight:700;color:#fff;flex-shrink:0;background:${role==='ai'?'linear-gradient(135deg,#2DD4BF,#0F9D8A)':'linear-gradient(135deg,#60A5FA,#3B82F6)'}`;
+    av.textContent = role === 'ai' ? 'AI' : '🙋';
+    const bubble = document.createElement('div');
+    bubble.style.cssText = `padding:9px 13px;border-radius:14px;font-size:12px;line-height:1.55;max-width:80%;${role==='user'?'background:linear-gradient(135deg,#0F9D8A,#2DD4BF);color:#fff;border-bottom-right-radius:4px':'background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.88);border-bottom-left-radius:4px'}`;
+    wrap.appendChild(av);
+    wrap.appendChild(bubble);
+    chatArea.appendChild(wrap);
+    chatArea.scrollTop = chatArea.scrollHeight;
+    return bubble;
+  }
+
+  function typeNext() {
+    if (msgIdx >= messages.length) {
+      setTimeout(() => { chatArea.innerHTML = ''; msgIdx = 0; charIdx = 0; typeNext(); }, 3000);
+      return;
+    }
+    const msg = messages[msgIdx];
+    if (charIdx === 0) { currentBubble = createBubble(msg.role); }
+    if (charIdx < msg.text.length) {
+      const cursor = currentBubble.querySelector('.typing-cursor');
+      if (cursor) cursor.remove();
+      currentBubble.textContent = msg.text.slice(0, ++charIdx);
+      const cur = document.createElement('span');
+      cur.className = 'typing-cursor';
+      currentBubble.appendChild(cur);
+      setTimeout(typeNext, 40);
+    } else {
+      const cursor = currentBubble.querySelector('.typing-cursor');
+      if (cursor) cursor.remove();
+      msgIdx++; charIdx = 0;
+      setTimeout(typeNext, msg.role === 'ai' ? 1200 : 600);
+    }
+  }
+
+  setTimeout(typeNext, 800);
+</script>
+
+</body>
+</html>
