@@ -351,7 +351,16 @@
     .cs-badge { position: absolute; top: -2px; right: -2px; width: 18px; height: 18px; border-radius: 50%; background: #EF4444; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
     .cs-badge.hidden { display: none; }
 
-    /* ── SCROLL REVEAL ── */
+    .img-placeholder {
+      aspect-ratio: 4/3;
+      background: #F3F4F6;
+      border-radius: 20px;
+      border: 2px dashed #D1D5DB;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .img-placeholder span {
+      font-size: 14px; color: #9CA3AF; font-weight: 500;
+    }
     .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
@@ -467,33 +476,8 @@
           <li>완성 후 제출 버튼 한 번으로 공유</li>
         </ul>
       </div>
-      <div class="mock-card reveal reveal-delay-1">
-        <div class="mock-header mint-bg">
-          <span style="font-size:16px">🍑</span>
-          <div>
-            <div class="mock-title white">에듀바이브 실습창</div>
-          </div>
-        </div>
-        <div class="mock-body dark" style="display:flex;flex-direction:column;gap:8px;padding:14px">
-          <div style="display:flex;gap:8px;align-items:flex-end;flex-direction:row-reverse">
-            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#60A5FA,#3B82F6);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">🙋</div>
-            <div style="background:linear-gradient(135deg,#0F9D8A,#2DD4BF);color:#fff;padding:8px 12px;border-radius:14px;border-bottom-right-radius:4px;font-size:12px;line-height:1.5;max-width:75%">나만의 소개 페이지 만들어줘! 취미랑 꿈도 넣고 싶어</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:flex-end">
-            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--mint-dk));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">AI</div>
-            <div style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);padding:8px 12px;border-radius:14px;border-bottom-left-radius:4px;font-size:12px;line-height:1.5;max-width:80%">소개 페이지 완성했어요! 취미 카드랑 꿈 섹션도 만들었어요. 색깔 바꿔볼까요?</div>
-          </div>
-          <div style="margin-top:4px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)">
-            <div style="background:linear-gradient(135deg,#667eea,#764ba2);padding:12px">
-              <div style="color:#fff;font-size:11px;font-weight:800;margin-bottom:6px">안녕하세요! 저는 김민준이에요</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap">
-                <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:100px;padding:2px 8px;font-size:10px">축구</span>
-                <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:100px;padding:2px 8px;font-size:10px">게임</span>
-                <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:100px;padding:2px 8px;font-size:10px">개발자</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="img-placeholder reveal reveal-delay-1">
+        <span>AI 실습창 화면</span>
       </div>
     </div>
 
@@ -510,36 +494,8 @@
           <li>학운위 심의 자료 & 개인정보 동의서 제공</li>
         </ul>
       </div>
-      <div class="mock-card reveal reveal-delay-1">
-        <div class="mock-header white-bg">
-          <div class="mock-title dark">3학년 2반 — 오늘의 수업</div>
-        </div>
-        <div class="mock-body white">
-          <div class="dash-row">
-            <div class="dash-avatar" style="background:#3B82F6">김</div>
-            <div class="dash-name">김민준</div>
-            <div class="dash-badge badge-done">제출 완료</div>
-          </div>
-          <div class="dash-row">
-            <div class="dash-avatar" style="background:#8B5CF6">이</div>
-            <div class="dash-name">이서연</div>
-            <div class="dash-badge badge-wip">제작 중</div>
-          </div>
-          <div class="dash-row">
-            <div class="dash-avatar" style="background:#EF4444">박</div>
-            <div class="dash-name">박지호</div>
-            <div class="dash-badge badge-help">🙋 도움 요청</div>
-          </div>
-          <div class="dash-row">
-            <div class="dash-avatar" style="background:#10B981">최</div>
-            <div class="dash-name">최지은</div>
-            <div class="dash-badge badge-done">제출 완료</div>
-          </div>
-          <div class="dash-progress">
-            <div class="dash-prog-label">제출 현황 — 18 / 27명</div>
-            <div class="dash-prog-bar"><div class="dash-prog-fill" style="width:67%"></div></div>
-          </div>
-        </div>
+      <div class="img-placeholder reveal reveal-delay-1">
+        <span>학급 관리 대시보드 화면</span>
       </div>
     </div>
 
@@ -556,37 +512,8 @@
           <li>CSV·파일 일괄 다운로드</li>
         </ul>
       </div>
-      <div class="mock-card reveal reveal-delay-1">
-        <div class="mock-header white-bg">
-          <div class="mock-title dark">3학년 2반 — 결과물 갤러리</div>
-        </div>
-        <div class="mock-body white">
-          <div class="gal-grid">
-            <div class="gal-item">
-              <div class="gal-item-bg" style="background:linear-gradient(135deg,#667eea,#764ba2);height:100%"></div>
-              <div class="gal-item-label">김민준</div>
-            </div>
-            <div class="gal-item">
-              <div class="gal-item-bg" style="background:linear-gradient(135deg,#f093fb,#f5576c);height:100%"></div>
-              <div class="gal-item-label">이서연</div>
-            </div>
-            <div class="gal-item">
-              <div class="gal-item-bg" style="background:linear-gradient(135deg,#4facfe,#00f2fe);height:100%"></div>
-              <div class="gal-item-label">박지호</div>
-            </div>
-            <div class="gal-item">
-              <div class="gal-item-bg" style="background:linear-gradient(135deg,#43e97b,#38f9d7);height:100%"></div>
-              <div class="gal-item-label">최지은</div>
-            </div>
-            <div class="gal-item">
-              <div class="gal-item-bg" style="background:linear-gradient(135deg,#fa709a,#fee140);height:100%"></div>
-              <div class="gal-item-label">정민서</div>
-            </div>
-            <div class="gal-item" style="background:#F9FAFB;display:flex;align-items:center;justify-content:center">
-              <span style="font-size:12px;color:var(--gray);font-weight:600">+22명</span>
-            </div>
-          </div>
-        </div>
+      <div class="img-placeholder reveal reveal-delay-1">
+        <span>결과물 갤러리 화면</span>
       </div>
     </div>
 
