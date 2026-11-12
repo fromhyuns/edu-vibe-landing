@@ -71,8 +71,7 @@
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 72px; align-items: center;
       padding: 120px 0 80px; position: relative; z-index: 1;
-    }
-    .hero-tag {
+    }    .hero-tag {
       display: inline-flex; align-items: center; gap: 6px;
       background: var(--mint-lt); color: var(--mint-dk);
       border-radius: 100px; padding: 6px 14px;
@@ -106,79 +105,88 @@
     }
     .btn-ghost:hover { background: var(--mint-dk); color: #fff; }
 
-    /* Hero — 타이핑 모션 UI 카드 */
+    /* Hero — 쇼케이스 UI */
     .hero-ui {
-      background: #fff; border-radius: 24px;
-      box-shadow: 0 32px 80px rgba(0,80,70,0.1), 0 0 0 1px rgba(45,212,191,0.12);
-      overflow: hidden; max-width: 420px; margin: 0 auto;
+      background: #0F1E1C; border-radius: 20px;
+      box-shadow: 0 32px 80px rgba(0,80,70,0.25), 0 0 0 1px rgba(45,212,191,0.15);
+      overflow: hidden; max-width: 480px; margin: 0 auto;
     }
     .ui-topbar {
-      background: linear-gradient(135deg, var(--mint-dk), #0A7A6B);
-      padding: 14px 18px; display: flex; align-items: center; gap: 10px;
+      background: #172422; border-bottom: 1px solid rgba(45,212,191,0.12);
+      padding: 12px 16px; display: flex; align-items: center; gap: 10px;
     }
-    .ui-topbar-title { color: #fff; font-size: 13px; font-weight: 700; }
-    .ui-topbar-sub { color: rgba(255,255,255,0.65); font-size: 11px; }
-    .ui-body { padding: 16px; }
-
-    /* 타이핑 채팅 */
-    .chat-area { display: flex; flex-direction: column; gap: 10px; min-height: 120px; }
-    .chat-bubble {
-      padding: 10px 14px; border-radius: 14px;
-      font-size: 13px; line-height: 1.55; width: fit-content; max-width: 80%;
+    .ui-dots { display: flex; gap: 5px; }
+    .ui-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .ui-topbar-info { margin-left: 8px; }
+    .ui-topbar-title { color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 700; }
+    .ui-topbar-sub { color: rgba(255,255,255,0.4); font-size: 10px; margin-top: 1px; }
+    .ui-stage {
+      display: grid; grid-template-columns: 1fr 1fr;
+      height: 320px;
     }
-    .chat-bubble.user {
-      background: linear-gradient(135deg, #0F9D8A, #2DD4BF);
-      color: #fff; align-self: flex-end; border-bottom-right-radius: 4px;
+    /* 왼쪽: 채팅 */
+    .ui-chat {
+      border-right: 1px solid rgba(255,255,255,0.06);
+      padding: 14px; display: flex; flex-direction: column; gap: 8px; overflow: hidden;
     }
-    .chat-bubble.ai {
-      background: var(--mint-pal, #F0FDFB); color: #134E4A;
-      border-bottom-left-radius: 4px;
-    }
-    .typing-cursor {
-      display: inline-block; width: 2px; height: 14px;
-      background: var(--mint-dk); margin-left: 2px; vertical-align: middle;
-      animation: blink 0.8s infinite;
-    }
+    .ui-chat-label { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 4px; }
+    .chat-area { display: flex; flex-direction: column; gap: 8px; flex: 1; overflow: hidden; }
+    .typing-cursor { display: inline-block; width: 2px; height: 12px; background: var(--mint); margin-left: 2px; vertical-align: middle; animation: blink 0.8s infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-    /* 미리보기 화면 */
-    .ui-preview {
-      margin-top: 12px; border-radius: 12px; overflow: hidden;
-      border: 1px solid rgba(45,212,191,0.15);
-      transition: all 0.5s ease;
+    /* 오른쪽: 미리보기 */
+    .ui-preview-panel { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .ui-preview-label { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 4px; }
+    .ui-preview-screen {
+      flex: 1; border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.4s ease;
+      position: relative;
     }
-    .preview-inner {
-      padding: 16px; min-height: 100px;
-      transition: all 0.5s ease;
+    /* 스켈레톤 */
+    .sk-wrap { padding: 12px; display: flex; flex-direction: column; gap: 6px; height: 100%; }
+    .sk { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); }
+    /* 로딩 */
+    .loading-dots { display: none; align-items: center; justify-content: center; height: 100%; gap: 5px; }
+    .loading-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); animation: dotBounce 1s infinite; }
+    .loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes dotBounce { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }
+    /* 완성 화면 */
+    .result-page { display: none; height: 100%; animation: fadeInUp 0.4s ease forwards; }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .result-page-header { background: linear-gradient(135deg, #667eea, #764ba2); padding: 10px 12px; }
+    .result-page-title { color: #fff; font-size: 11px; font-weight: 800; margin-bottom: 5px; }
+    .result-page-tags { display: flex; gap: 3px; flex-wrap: wrap; }
+    .result-page-tag { background: rgba(255,255,255,0.2); color: #fff; border-radius: 100px; padding: 1px 7px; font-size: 9px; font-weight: 600; }
+    .result-page-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; background: rgba(255,255,255,0.03); }
+    .result-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.12); }
+    /* 하단 액션바 */
+    .ui-actionbar {
+      background: #172422; border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 10px 14px; display: flex; gap: 8px; align-items: center;
     }
-    .preview-skeleton { display: flex; flex-direction: column; gap: 6px; }
-    .sk { height: 8px; border-radius: 4px; background: #E5E7EB; }
-
-    /* 완성된 웹페이지 미리보기 */
-    .preview-done {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      padding: 16px; display: none;
+    .ui-input-mock {
+      flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 7px 10px; font-size: 11px; color: rgba(255,255,255,0.3);
     }
-    .preview-done-title { color: #fff; font-size: 13px; font-weight: 800; margin-bottom: 8px; }
-    .preview-done-card {
-      background: rgba(255,255,255,0.15); border-radius: 8px;
-      padding: 10px 12px; margin-bottom: 6px;
+    .ui-send-btn {
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--mint), var(--mint-dk));
+      display: flex; align-items: center; justify-content: center; font-size: 12px;
     }
-    .preview-done-name { color: #fff; font-size: 11px; font-weight: 700; }
-    .preview-done-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-    .preview-done-tag {
-      background: rgba(255,255,255,0.2); color: #fff;
-      border-radius: 100px; padding: 2px 8px; font-size: 10px; font-weight: 600;
+    /* 스텝 인디케이터 */
+    .ui-steps {
+      display: flex; gap: 6px; justify-content: center; padding: 10px 0 2px;
     }
-    .preview-submit {
-      display: flex; gap: 8px; margin-top: 10px;
+    .ui-step-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); transition: all 0.3s;
     }
-    .ps-btn {
-      flex: 1; border-radius: 8px; padding: 8px;
-      font-size: 11px; font-weight: 700; text-align: center;
+    .ui-step-dot.active { background: var(--mint); transform: scale(1.3); }
+    .ui-step-label {
+      text-align: center; font-size: 10px; color: rgba(255,255,255,0.35);
+      font-weight: 600; padding-bottom: 10px; min-height: 16px; transition: all 0.3s;
     }
-    .ps-btn.primary { background: var(--mint); color: #fff; }
-    .ps-btn.secondary { background: rgba(255,255,255,0.15); color: #fff; }
 
     /* ── § 2 FEATURES (통합) ── */
     #features { background: #fff; min-height: auto; }
@@ -444,26 +452,38 @@
         </div>
       </div>
 
-      <!-- 타이핑 모션 UI -->
+      <!-- 쇼케이스 UI -->
       <div class="reveal reveal-delay-2">
         <div class="hero-ui">
           <div class="ui-topbar">
-            <span style="font-size:20px">🍑</span>
-            <div>
-              <div class="ui-topbar-title">에듀바이브</div>
-              <div class="ui-topbar-sub">AI와 함께 만들어요</div>
+            <div class="ui-dots">
+              <div class="ui-dot" style="background:#FF5F57"></div>
+              <div class="ui-dot" style="background:#FEBC2E"></div>
+              <div class="ui-dot" style="background:#28C840"></div>
+            </div>
+            <div class="ui-topbar-info">
+              <div class="ui-topbar-title">에듀바이브 실습창</div>
+              <div class="ui-topbar-sub">edu-vibe.goorm.io</div>
             </div>
           </div>
-          <div class="ui-body">
-            <div class="chat-area" id="chatArea"></div>
-            <div class="ui-preview" id="uiPreview">
-              <div class="preview-inner" id="previewInner">
-                <div class="preview-skeleton" id="skeletonArea">
-                  <div class="sk" style="width:60%"></div>
-                  <div class="sk" style="width:80%"></div>
+          <div class="ui-stage">
+            <!-- 채팅 영역 -->
+            <div class="ui-chat">
+              <div class="ui-chat-label">채팅</div>
+              <div class="chat-area" id="chatArea"></div>
+            </div>
+            <!-- 미리보기 영역 -->
+            <div class="ui-preview-panel">
+              <div class="ui-preview-label">미리보기</div>
+              <div class="ui-preview-screen" id="previewScreen">
+                <div class="sk-wrap" id="skeletonArea">
+                  <div class="sk" style="width:70%"></div>
                   <div class="sk" style="width:50%"></div>
+                  <div class="sk" style="width:80%"></div>
+                  <div class="sk" style="width:40%"></div>
+                  <div class="sk" style="width:65%"></div>
                 </div>
-                <div class="loading-dots" id="loadingDots" style="display:none">
+                <div class="loading-dots" id="loadingDots">
                   <span></span><span></span><span></span>
                 </div>
                 <div class="result-page" id="resultPage">
@@ -476,18 +496,26 @@
                     </div>
                   </div>
                   <div class="result-page-body">
-                    <div class="result-bar" style="width:70%"></div>
-                    <div class="result-bar" style="width:50%"></div>
-                    <div class="result-bar" style="width:60%"></div>
+                    <div class="result-bar" style="width:75%"></div>
+                    <div class="result-bar" style="width:55%"></div>
+                    <div class="result-bar" style="width:65%"></div>
+                    <div class="result-bar" style="width:45%"></div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="preview-submit" style="margin-top:10px">
-              <div class="ps-btn primary">선생님께 제출하기</div>
-              <div class="ps-btn secondary" style="background:#F3F4F6;color:#6B7280;flex:0.5">도움 요청</div>
-            </div>
           </div>
+          <div class="ui-actionbar">
+            <div class="ui-input-mock" id="inputMock">하고 싶은 걸 입력하세요...</div>
+            <div class="ui-send-btn">→</div>
+          </div>
+          <!-- 스텝 인디케이터 -->
+          <div class="ui-steps">
+            <div class="ui-step-dot active" id="dot0"></div>
+            <div class="ui-step-dot" id="dot1"></div>
+            <div class="ui-step-dot" id="dot2"></div>
+          </div>
+          <div class="ui-step-label" id="stepLabel">학생이 원하는 걸 입력해요</div>
         </div>
       </div>
 
@@ -673,43 +701,94 @@
     document.querySelector('nav').style.boxShadow = window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,0.07)' : 'none';
   }, { passive: true });
 
-  /* 히어로 모션: 대화 → 로딩 → 완성 페이지 */
-  const messages = [
-    { role: 'user', text: '나만의 소개 페이지 만들어줘! 취미랑 꿈도 넣고 싶어' },
-    { role: 'ai',   text: '알겠어요! 소개 페이지를 만들어 드릴게요.' },
-  ];
-
+  /* 히어로 쇼케이스 모션: 입력 → 대화 → 로딩 → 완성 → 반복 */
   const chatArea     = document.getElementById('chatArea');
   const skeletonArea = document.getElementById('skeletonArea');
   const loadingDots  = document.getElementById('loadingDots');
   const resultPage   = document.getElementById('resultPage');
-  let msgIdx = 0, charIdx = 0, currentBubble = null;
+  const inputMock    = document.getElementById('inputMock');
+  const stepLabel    = document.getElementById('stepLabel');
+  const dots         = [document.getElementById('dot0'), document.getElementById('dot1'), document.getElementById('dot2')];
+
+  const userText = '나만의 소개 페이지 만들어줘! 취미랑 꿈도 넣고 싶어';
+  const aiText   = '알겠어요! 소개 페이지를 만들어 드릴게요.';
+
+  function setStep(n, label) {
+    dots.forEach((d, i) => d.classList.toggle('active', i === n));
+    stepLabel.textContent = label;
+  }
 
   function createBubble(role) {
     const wrap = document.createElement('div');
-    wrap.style.cssText = `display:flex;gap:8px;align-items:flex-end;${role==='user'?'flex-direction:row-reverse':''}`;
+    wrap.style.cssText = `display:flex;gap:6px;align-items:flex-end;margin-bottom:2px;${role==='user'?'flex-direction:row-reverse':''}`;
     const av = document.createElement('div');
-    av.style.cssText = `width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${role==='ai'?'10px':'13px'};font-weight:700;color:#fff;flex-shrink:0;background:${role==='ai'?'linear-gradient(135deg,#2DD4BF,#0F9D8A)':'linear-gradient(135deg,#60A5FA,#3B82F6)'}`;
+    av.style.cssText = `width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${role==='ai'?'9px':'11px'};font-weight:700;color:#fff;flex-shrink:0;background:${role==='ai'?'linear-gradient(135deg,#2DD4BF,#0F9D8A)':'linear-gradient(135deg,#60A5FA,#3B82F6)'}`;
     av.textContent = role === 'ai' ? 'AI' : '🙋';
     const bubble = document.createElement('div');
-    bubble.style.cssText = `padding:9px 13px;border-radius:14px;font-size:12px;line-height:1.55;max-width:80%;${role==='user'?'background:linear-gradient(135deg,#0F9D8A,#2DD4BF);color:#fff;border-bottom-right-radius:4px':'background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.88);border-bottom-left-radius:4px'}`;
+    bubble.style.cssText = `padding:7px 10px;border-radius:12px;font-size:11px;line-height:1.5;max-width:85%;${role==='user'?'background:linear-gradient(135deg,#0F9D8A,#2DD4BF);color:#fff;border-bottom-right-radius:3px':'background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);border-bottom-left-radius:3px'}`;
     wrap.appendChild(av);
     wrap.appendChild(bubble);
     chatArea.appendChild(wrap);
-    chatArea.scrollTop = chatArea.scrollHeight;
     return bubble;
   }
 
-  function showLoading() {
+  function typeText(bubble, text, speed, cb) {
+    let i = 0;
+    function tick() {
+      const cursor = bubble.querySelector('.typing-cursor');
+      if (cursor) cursor.remove();
+      bubble.textContent = text.slice(0, ++i);
+      const cur = document.createElement('span');
+      cur.className = 'typing-cursor';
+      bubble.appendChild(cur);
+      if (i < text.length) setTimeout(tick, speed);
+      else { cursor && cursor.remove(); if (cb) setTimeout(cb, 400); }
+    }
+    tick();
+  }
+
+  /* 단계 1: 입력창 타이핑 */
+  function step1_input() {
+    setStep(0, '학생이 원하는 걸 입력해요');
+    inputMock.textContent = '';
+    let i = 0;
+    const shortText = '소개 페이지 만들어줘!';
+    function tick() {
+      inputMock.textContent = shortText.slice(0, ++i);
+      if (i < shortText.length) setTimeout(tick, 60);
+      else setTimeout(step2_chat, 500);
+    }
+    tick();
+  }
+
+  /* 단계 2: 채팅 대화 */
+  function step2_chat() {
+    setStep(1, 'AI가 요청을 이해해요');
+    inputMock.textContent = '하고 싶은 걸 입력하세요...';
+    chatArea.innerHTML = '';
+    const userBubble = createBubble('user');
+    typeText(userBubble, userText, 28, () => {
+      const aiBubble = createBubble('ai');
+      typeText(aiBubble, aiText, 32, step3_loading);
+    });
+  }
+
+  /* 단계 3: 로딩 */
+  function step3_loading() {
+    setStep(2, 'AI가 웹페이지를 만들어요');
     skeletonArea.style.display = 'none';
     resultPage.style.display   = 'none';
     loadingDots.style.display  = 'flex';
+    setTimeout(step4_result, 1800);
   }
 
-  function showResult() {
+  /* 단계 4: 완성 화면 */
+  function step4_result() {
     loadingDots.style.display = 'none';
     resultPage.style.display  = 'block';
     resultPage.style.animation = 'fadeInUp 0.4s ease forwards';
+    setStep(2, '웹페이지 완성!');
+    setTimeout(resetAll, 3000);
   }
 
   function resetAll() {
@@ -717,42 +796,10 @@
     skeletonArea.style.display = 'flex';
     loadingDots.style.display  = 'none';
     resultPage.style.display   = 'none';
-    msgIdx = 0; charIdx = 0;
-    setTimeout(typeNext, 600);
+    setTimeout(step1_input, 600);
   }
 
-  function typeNext() {
-    if (msgIdx >= messages.length) {
-      // 로딩 모션
-      showLoading();
-      setTimeout(() => {
-        showResult();
-        // 2.5초 후 처음부터 반복
-        setTimeout(resetAll, 3500);
-      }, 1800);
-      return;
-    }
-    const msg = messages[msgIdx];
-    if (charIdx === 0) { currentBubble = createBubble(msg.role); }
-    if (charIdx < msg.text.length) {
-      const cursor = currentBubble.querySelector('.typing-cursor');
-      if (cursor) cursor.remove();
-      currentBubble.textContent = msg.text.slice(0, ++charIdx);
-      const cur = document.createElement('span');
-      cur.className = 'typing-cursor';
-      currentBubble.appendChild(cur);
-      setTimeout(typeNext, 38);
-    } else {
-      const cursor = currentBubble.querySelector('.typing-cursor');
-      if (cursor) cursor.remove();
-      msgIdx++; charIdx = 0;
-      setTimeout(typeNext, msg.role === 'ai' ? 800 : 500);
-    }
-  }
-
-  setTimeout(typeNext, 800);
-
-  setTimeout(typeNext, 800);
+  setTimeout(step1_input, 1000);
 </script>
 
 </body>
